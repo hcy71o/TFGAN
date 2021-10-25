@@ -10,7 +10,7 @@ def validate(hp, args, generator, discriminator, valloader, stft, writer, step, 
 
     loader = tqdm.tqdm(valloader, desc='Validation loop')
     mel_loss = 0.0
-    for idx, (mel, audio) in enumerate(loader):
+    for idx, (mel, audio, cond1, cond2) in enumerate(loader):
         mel = mel.to(device)
         audio = audio.to(device)
         noise = torch.randn(1, hp.gen.noise_dim, mel.size(2)).to(device)

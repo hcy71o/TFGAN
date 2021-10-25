@@ -1,12 +1,12 @@
 data:
-  train_dir: 'datasets/' # root path of train data (either relative/absoulte path is ok)
-  train_meta: 'metadata/libritts_train_clean_360_audiopath_text_sid_train.txt'  # relative path of metadata file from train_dir
-  val_dir: 'datasets/' # root path of validation data
-  val_meta: 'metadata/libritts_train_clean_360_audiopath_text_sid_val.txt'  # relative path of metadata file from val_dir
+  train_dir: '/home/hcy71/DATA/preprocessed_data/LJSpeech-1.1/' # root path of train data (either relative/absoulte path is ok)
+  train_meta: 'train.txt'  # relative path of metadata file from train_dir
+  val_dir: '/home/hcy71/DATA/preprocessed_data/LJSpeech-1.1/' # root path of validation data
+  val_meta: 'val.txt'  # relative path of metadata file from val_dir
 #############################
 train:
   num_workers: 8
-  batch_size: 32
+  batch_size: 6
   optimizer: 'adam'
   seed: 1234
   adam:
@@ -23,9 +23,30 @@ audio:
   filter_length: 1024
   hop_length: 256 # WARNING: this can't be changed.
   win_length: 1024
-  sampling_rate: 24000
+  sampling_rate: 22050
   mel_fmin: 0.0
   mel_fmax: 12000.0
+
+#! for condition (narrowband spec., wideband spec.)
+cond1:
+  n_mel_channels: 80
+  filter_length: 1024
+  hop_length: 256 
+  win_length: 1024
+  sampling_rate: 22050
+  mel_fmin: 0.0
+  mel_fmax: 12000.0
+
+cond2:
+  n_mel_channels: 80
+  filter_length: 256
+  hop_length: 64 
+  win_length: 256
+  sampling_rate: 22050
+  mel_fmin: 0.0
+  mel_fmax: 12000.0
+  
+
 #############################
 gen:
   noise_dim: 64
@@ -65,7 +86,7 @@ fd:
 #############################
 
 tdisc:
-  hidden_dim: 128
+  hidden_dim: 64
   lReLU_slope: 0.2
   #* LVC
   ker_size: 3
@@ -75,7 +96,7 @@ tdisc:
 
 
 fdisc:
-  hidden_dim: 128
+  hidden_dim: 64
   lReLU_slope: 0.2
   #* LVC
   ker_size: 3
