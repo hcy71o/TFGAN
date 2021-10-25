@@ -24,3 +24,6 @@ def read_wav_np(path):
     wav = wav.astype(np.float32)
 
     return sr, wav
+
+def get_padding(kernel_size, dilation=1):
+    return int((kernel_size*dilation - dilation)/2)
