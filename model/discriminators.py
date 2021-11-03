@@ -129,11 +129,9 @@ class LVC_ConvBlock(nn.Module):
 
         return o
 
-
 class TDiscriminator(nn.Module):
     def __init__(self, hp):
         super(TDiscriminator, self).__init__()
-
 
         hidden_dim = hp.tdisc.hidden_dim
         dilations = hp.tdisc.dilations
@@ -244,7 +242,7 @@ if __name__ == '__main__':
     # f_kernels = torch.randn(3,f_numlayers,f_hid,f_hid,3,32)
     # f_bias = torch.randn(3,f_numlayers,f_hid,32)
     t_c = torch.randn(3,512,128) #* (b_s, time feature dim, time_feature_length)
-    f_c = torch.randn(3,80,32) #* (b_s, freq feature dim, frequency_feature_length)
+    f_c = torch.randn(3,100,32) #* (b_s, freq feature dim, frequency_feature_length)
     
     t_output, f_output = model(x, t_c, f_c)
     print(t_output.shape, f_output.shape)

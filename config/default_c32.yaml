@@ -6,7 +6,7 @@ data:
 #############################
 train:
   num_workers: 8
-  batch_size: 6
+  batch_size: 12
   optimizer: 'adam'
   seed: 1234
   adam:
@@ -17,7 +17,7 @@ train:
   spk_balanced: False # Using balanced sampling for each speaker
 #############################
 audio:
-  n_mel_channels: 80
+  n_mel_channels: 100
   segment_length: 16384 # Should be multiple of 256
   pad_short: 2000
   filter_length: 1024
@@ -29,7 +29,7 @@ audio:
 
 #! for condition (narrowband spec., wideband spec.)
 cond1:
-  n_mel_channels: 80
+  n_mel_channels: 100
   filter_length: 1024
   hop_length: 256 
   win_length: 1024
@@ -38,14 +38,13 @@ cond1:
   mel_fmax: 12000.0
 
 cond2:
-  n_mel_channels: 80
+  n_mel_channels: 100
   filter_length: 256
   hop_length: 64 
   win_length: 256
   sampling_rate: 22050
   mel_fmin: 0.0
   mel_fmax: 12000.0
-  
 
 #############################
 gen:
@@ -69,24 +68,23 @@ td:
   hidden_channels: [128,256,512]
   conv_size: 3 #* for feature extraction
   num_layers: 3
-  
   hidden_dim: 64
-
 
 #############################
 fd:
   #* for feature extractor
-  conv_size: 3
+
+  conv_size: 7
   hidden_channels: [128,128,256,512]
   # resolution: (2048,256,1024)
   lReLU_slope: 0.2
   #* for Discriminator
   hidden_dim: 64
-  dilations: [1, 3, 9, 27] #* receptive field ~ 80
+  dilations: [1, 2, 4, 8] #* receptive field ~ 80
 #############################
 
 tdisc:
-  hidden_dim: 64
+  hidden_dim: 48
   lReLU_slope: 0.2
   #* LVC
   ker_size: 3
@@ -94,18 +92,14 @@ tdisc:
   dilations: [1,2,4,1,2,4]
   conv_size: 5
 
-
 fdisc:
-  hidden_dim: 64
+  hidden_dim: 48
   lReLU_slope: 0.2
   #* LVC
   ker_size: 3
   #* conv
   dilations: [1,2,4,8,16,32]
   conv_size: 5
-
-
-
 
 mrd:
   resolutions: "[(1024, 120, 600), (2048, 240, 1200), (512, 50, 240)]" # (filter_length, hop_length, win_length)
@@ -118,9 +112,9 @@ dist_config:
   world_size: 1
 #############################
 log:
-  summary_interval: 1
-  validation_interval: 1
-  save_interval: 1
+  summary_interval: 1000
+  validation_interval: 5
+  save_interval: 5
   num_audio: 5
   chkpt_dir: 'chkpt'
   log_dir: 'logs'

@@ -77,6 +77,16 @@ def train(rank, args, chkpt_path, hp, hp_str):
                             center=False,
                             device=device)
 
+        stft_val = TacotronSTFT(filter_length=hp.audio.filter_length,
+            hop_length=hp.audio.hop_length,
+            win_length=hp.audio.win_length,
+            n_mel_channels=80,
+            sampling_rate=hp.audio.sampling_rate,
+            mel_fmin=hp.audio.mel_fmin,
+            mel_fmax=hp.audio.mel_fmax,
+            center=False,
+            device=device)
+
     if chkpt_path is not None:
         if rank == 0:
             logger.info("Resuming from checkpoint: %s" % chkpt_path)
@@ -126,7 +136,7 @@ def train(rank, args, chkpt_path, hp, hp_str):
         
         if rank == 0 and epoch % hp.log.validation_interval == 0:
             with torch.no_grad():
-                validate(hp, args, model_g, model_d, valloader, stft, writer, step, device)
+                validate(hp, args, model_g, model_d, valloader, stft_val, writer, step, device)
 
         trainloader.dataset.shuffle_mapping()
         if rank == 0:

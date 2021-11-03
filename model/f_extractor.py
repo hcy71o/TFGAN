@@ -98,14 +98,13 @@ class FExtractor(torch.nn.Module):
         conv_size = hp.fd.conv_size
         
         self.convs = nn.ModuleList([
-            nn.utils.spectral_norm(Conv2d(1, 32, (conv_size, 1), dilation=(1, 1), padding=(get_padding(conv_size, 1), 0))),
-            nn.utils.weight_norm(Conv2d(32, 64, (conv_size, 1), dilation=(2, 1), padding=(get_padding(conv_size, 2), 0))),
-            nn.utils.weight_norm(Conv2d(64, 128, (conv_size, 1), dilation=(4, 1), padding=(get_padding(conv_size, 4), 0))),
-            nn.utils.weight_norm(Conv2d(128, 256, (conv_size, 1), dilation=(8, 1), padding=(get_padding(conv_size, 8), 0))),
-            nn.utils.weight_norm(Conv2d(256, 512, (conv_size, 1), dilation=(16, 1), padding=(get_padding(conv_size, 16), 0))),
-            nn.utils.weight_norm(Conv2d(512, 512, (11, 1), padding=(get_padding(11, 1), 0)))
+            nn.utils.spectral_norm(Conv2d(1, 64, (conv_size, 1), dilation=(1, 1), padding=(get_padding(conv_size, 1), 0))),
+            nn.utils.weight_norm(Conv2d(64, 128, (conv_size, 1), dilation=(2, 1), padding=(get_padding(conv_size, 2), 0))),
+            nn.utils.weight_norm(Conv2d(128, 256, (conv_size, 1), dilation=(4, 1), padding=(get_padding(conv_size, 4), 0))),
+            nn.utils.weight_norm(Conv2d(256, 256, (conv_size, 1), dilation=(8, 1), padding=(get_padding(conv_size, 8), 0))),
+            nn.utils.weight_norm(Conv2d(256, 256, (11, 1), padding=(get_padding(11, 1), 0)))
         ])
-        self.post = nn.utils.weight_norm(Conv2d(512,1, (11, 1), padding=(get_padding(11,1),0)))
+        self.post = nn.utils.weight_norm(Conv2d(256,1, (11, 1), padding=(get_padding(11,1),0)))
 
         self.act = nn.LeakyReLU(LReLU_slope)
    
@@ -127,8 +126,8 @@ if __name__ == '__main__':
     t_ex = TExtractor(hp)
     f_ex = FExtractor(hp)
 
-    narrow = torch.randn(1, 80, 32)
-    wide = torch.randn(1, 80, 128)
+    narrow = torch.randn(1, 100, 32)
+    wide = torch.randn(1, 100, 128)
     print("TExtractor output:", t_ex(wide).shape)
     print("FExtractor output:", f_ex(narrow).shape)
     # assert y.shape == torch.Size([3, 1, 2560])
